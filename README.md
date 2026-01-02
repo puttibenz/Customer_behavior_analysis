@@ -1,70 +1,71 @@
-# Customer_behavior_analysis
-# 📊 [Project Name: e.g., Customer_behavior_analysis]
-
-![Status](https://img.shields.io/badge/Status-Completed-success)
-![Python](https://img.shields.io/badge/Python-3.9+-blue)
-![SQL](https://img.shields.io/badge/SQL-PostgreSQL-orange)
-![Power BI](https://img.shields.io/badge/PowerBI-Desktop-yellow)
+# 🛍️ Customer Shopping Behavior Analytics
 
 ## 📝 Overview
-This project is an end-to-end data analytics study designed to [identify key business questions, e.g., optimize sales strategies and reduce customer churn]. 
+This project is an end-to-end data analytics study designed to understand customer purchasing habits. The workflow involves an ETL (Extract, Transform, Load) process where raw data is cleaned and enriched in **Python**, migrated to a **SQL Server** database for warehousing, and finally visualized in **Power BI** to drive business decisions.
 
-By analyzing a dataset of [Number] records, I performed data cleaning and EDA in Python, migrated the data to a SQL database for complex querying, and visualized the actionable insights using an interactive Power BI dashboard. The final presentation deck was created using Gamma.
-
-**Key Business Problem:** [Briefly state the problem, e.g., How can we increase profitability across underperforming regions?]
+**Key Business Goal:** Analyze spending trends, subscription impact, and regional preferences to optimize marketing strategies.
 
 ## 📂 Dataset
-* **Source:** [e.g., Kaggle / Company Internal Data / Public API] - [Link to Dataset]
-* **Description:** The dataset contains [Number] rows and [Number] columns, including attributes such as [List 3 major columns, e.g., Order Date, Region, Sales Amount].
-* **Time Period:** [e.g., Jan 2020 - Dec 2023]
+* **Source:** `customer_shopping_behavior.csv`
+* **Volume:** 3,900 Records | 19 Columns
+* **Key Attributes:**
+    * **Customer Demographics:** Age, Gender, Location.
+    * **Purchase Details:** Item Purchased, Category, Purchase Amount (USD).
+    * **Behavioral Metrics:** Review Rating, Subscription Status, Frequency of Purchases.
 
-## 🛠️ Tools & Technologies Used
-* **Python:** Pandas, NumPy, Matplotlib/Seaborn (Data Loading, Cleaning, & EDA)
-* **SQL (PostgreSQL/MySQL):** Data storage and complex queries (Joins, CTEs, Window Functions)
-* **Power BI:** DAX, Data Modeling, and Dashboard creation
-* **Gamma:** AI-powered presentation generation
+## 🛠️ Tools & Technologies
+* **Python (Google Colab):** Pandas, NumPy, SQLAlchemy, PyODBC (Data Cleaning & ETL).
+* **Microsoft SQL Server:** Data storage and management.
+* **Ngrok:** Exposing local SQL Server to Google Colab for remote data insertion.
+* **Power BI:** Interactive Dashboarding & Data Modeling.
+* **Gamma:** AI-powered presentation generation.
 
 ## 🔄 Project Steps
-1.  **Data Loading & Quality Check:** Loaded raw data into Python to identify missing values, duplicates, and inconsistencies.
-2.  **Data Cleaning & EDA:** * Handled null values using [Method, e.g., mean imputation].
-    * Corrected data types and formatted date columns.
-    * Performed univariate and bivariate analysis to understand distributions.
-3.  **Database Management (SQL):** * Designed a schema and inserted cleaned data into [SQL Server/PostgreSQL].
-    * Wrote queries to extract KPIs like [Metric 1] and [Metric 2].
-4.  **Visualization (Power BI):** * Built a Star Schema data model.
-    * Created measures using DAX.
-    * Designed an interactive dashboard focusing on [Key Focus Area].
-5.  **Reporting:** Compiled findings into a professional presentation using Gamma.
 
-## 📈 Dashboard
-![Dashboard Screenshot](path_to_your_image.png)
-*A snapshot of the Power BI Interactive Dashboard.*
+### 1. Data Cleaning & Preprocessing (Python)
+The raw dataset underwent a rigorous cleaning process in Jupyter Notebook:
+* **Missing Values:** Handled nulls in the `Review Rating` column using median imputation.
+* **Standardization:** Renamed columns to snake_case (e.g., `Purchase Amount (USD)` → `purchase_amount`) for consistency.
+* **Redundancy Removal:** Dropped the `promo_code_used` column after confirming a 100% correlation with `discount_applied`.
 
-## 💡 Key Results & Insights
-* **Insight 1:** [e.g., The 'Consumer' segment accounts for 65% of total revenue but has the highest return rate.]
-* **Insight 2:** [e.g., Sales peak in Q4, specifically November, driven by holiday promotions.]
-* **Insight 3:** [e.g., Shipping delays in the 'West' region are negatively impacting customer satisfaction scores.]
+### 2. Feature Engineering
+To enable deeper analysis, new features were created:
+* **`age_group`:** Segmented customers into 4 quartiles: *Young Adult, Adult, Middle-Age, Senior*.
+* **`purchase_frequency_days`:** Mapped categorical frequencies (e.g., "Fortnightly", "Weekly") to numeric values (e.g., 14, 7) for time-series analysis.
 
-**Recommendation:** [e.g., Focus marketing efforts on the Consumer segment while optimizing logistics in the West region to reduce churn.]
+### 3. Database Migration (SQL)
+* Established a connection to a local SQL Server instance using `sqlalchemy` and `pyodbc` via Ngrok.
+* Exported the processed DataFrame into the `customer_behavior` database under the table name `customer`.
+
+### 4. Visualization (Power BI)
+* Connected Power BI to the SQL Server database.
+* Built an interactive dashboard focusing on:
+    * Sales performance by Region and Season.
+    * Impact of Subscriptions on Purchase Frequency.
+    * Customer Segmentation by Age Group.
+
+## 📈 Dashboard Insights
+*(Placeholder: Insert your Power BI screenshot here)*
+
+**Key Findings:**
+* **Demographics:** The "Middle-Age" group contributes to the highest volume of purchases.
+* **Logistics:** "Express" shipping is the preferred method for Subscription users.
+* **Seasonality:** Sales peak during Spring and Winter, driven largely by the Clothing category.
 
 ## 💻 How to Run
-To replicate this analysis:
+1.  **Python ETL:**
+    * Open `customer_behavior.ipynb` in Google Colab or Jupyter.
+    * Update the `host` and `port` variables in the SQL Connection cell with your current Ngrok configuration.
+    * Run all cells to clean data and push it to SQL Server.
+2.  **SQL Setup:**
+    * Ensure SQL Server is running and the database `customer_behavior` exists.
+3.  **Power BI:**
+    * Open the `.pbix` file.
+    * Refresh the data source to pull the latest data from your SQL table.
 
-1.  **Clone the Repository**
-    ```bash
-    git clone [https://github.com/yourusername/your-repo-name.git](https://github.com/yourusername/your-repo-name.git)
-    ```
-2.  **Python Setup**
-    * Install dependencies: `pip install -r requirements.txt`
-    * Run the Google Colab Notebook: `notebooks/data_cleaning.ipynb`
-3.  **SQL Setup**
-    * Load the `schema.sql` into your SQL database.
-    * Import the cleaned CSV generated by the Python script.
-4.  **Power BI**
-    * Open `dashboard/sales_analysis.pbix`.
-    * Ensure the data source points to your local SQL instance or the provided CSV.
-
-
+## 📽️ Presentation
+The final report and slide deck were generated using Gamma.
+[Link to Presentation / PDF]
 
 ---
-**Contact:** [Your Name] | [LinkedIn Profile] | [Email]
+**Author:** [Your Name]
